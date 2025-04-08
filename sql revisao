@@ -1,0 +1,55 @@
+📌 Coisas importantes pra colocar
+✅ 1. Criação do banco e tabelas
+sql
+Copiar
+Editar
+CREATE DATABASE loja;
+USE loja;
+
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefone VARCHAR(20),
+    endereco TEXT
+);
+-- mesma coisa pra produtos e pedidos
+✅ 2. Inserção de dados
+sql
+Copiar
+Editar
+INSERT INTO clientes (nome, email, telefone, endereco) VALUES
+('João Silva', 'joao@email.com', '1111-1111', 'Rua A, 123'),
+...
+✅ 3. Consultas básicas
+sql
+Copiar
+Editar
+-- Contar número de clientes
+SELECT COUNT(*) AS total_clientes FROM clientes;
+
+-- Calcular valor total dos pedidos
+SELECT SUM(p.quantidade * pr.preco) AS total_pedidos
+FROM pedidos p
+JOIN produtos pr ON p.produto_id = pr.id;
+✅ 4. Consultas com JOIN, GROUP BY, ORDER BY
+sql
+Copiar
+Editar
+-- Clientes e seus pedidos
+SELECT c.nome, p.id, p.data_pedido
+FROM clientes c
+LEFT JOIN pedidos p ON c.id = p.cliente_id;
+
+-- Produtos mais vendidos
+SELECT pr.nome, SUM(p.quantidade) AS total_vendas
+FROM pedidos p
+JOIN produtos pr ON p.produto_id = pr.id
+GROUP BY pr.id
+ORDER BY total_vendas DESC;
+✅ 5. Erros comuns corrigidos
+Produto sem cliente (cliente_id IS NULL)
+
+Produto_id errado no JOIN
+
+produtos.produto_id inexistente → deveria ser produtos.id
